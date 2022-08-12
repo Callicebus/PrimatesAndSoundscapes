@@ -14,7 +14,7 @@ if(install) {
   install.packages("tuneR")
   install.packages("foreach")
   install.packages("tidyverse")
-  install.packages("libridate")
+  install.packages("lubridate")
 }
 
 #Call the package into R's memory:
@@ -35,7 +35,7 @@ template2b2 <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_
 
 template3b <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_003.wav", frq.lim = c(0.2, 1.8), t.lim = c(0, 10), name = "F3b,000,-25,T", amp.cutoff = (-25))
 
-template4b1 <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_004.wav", frq.lim = c(0.2, 1.4), t.lim = c(0, 10), name = "F4b,000,-25,T", amp.cutoff = (-25))
+#template4b1 <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_004.wav", frq.lim = c(0.2, 1.4), t.lim = c(0, 10), name = "F4b,000,-25,T", amp.cutoff = (-25))
 template4b2 <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_004.wav", frq.lim = c(0.2, 1.8), t.lim = c(30, 40), name = "F4b,030,-25,T", amp.cutoff = (-25))
 
 template5b <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_005.wav", frq.lim = c(0.2, 1.4), t.lim = c(65, 75), name = "F5b,065,-25,T", amp.cutoff = (-25))
@@ -44,8 +44,8 @@ template6b <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_0
 
 template7b <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_007.wav", frq.lim = c(0.2, 1.4), t.lim = c(17, 27), name = "F7b,017,-25,H", amp.cutoff = (-25))
 
-template8b1 <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_008.wav", frq.lim = c(0.3, 1.5), t.lim = c(25, 35), name = "F8b,025,-25,T", amp.cutoff = (-25))
-template8b2 <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_008.wav", frq.lim = c(0.3, 1.5), t.lim = c(36, 46), name = "F8b,036,-25,T", amp.cutoff = (-25))
+#template8b1 <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_008.wav", frq.lim = c(0.3, 1.5), t.lim = c(25, 35), name = "F8b,025,-25,T", amp.cutoff = (-25))
+#template8b2 <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_008.wav", frq.lim = c(0.3, 1.5), t.lim = c(36, 46), name = "F8b,036,-25,T", amp.cutoff = (-25))
 
 template0b <- makeBinTemplate("AutomatedDetection_CreatingTemplates/ManualRecording3_REC0083.wav", frq.lim = c(0.2, 1.8), t.lim = c(102, 112), name = "F0b,102,-25,T", amp.cutoff = (-25))
 
@@ -56,7 +56,8 @@ template10b <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_
 template11b <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_011.wav", frq.lim = c(0.7, 1.2), t.lim = c(10, 22), name = "F11b,010,-25,S", amp.cutoff = (-25))
 
 
-# Create a combined template bin. DON'T RUN BOTH LINES BELOW. CHOOSE WHICH ONE IS APPROPRIATE!
+# Create a combined template bin.
+# NOTE: ADJUST TO RUN ONLY THE TEMPLATES NEEDED.
 
 # All templates
 ctemps_adjusted_amp <- combineBinTemplates(template1b, template2b1, template2b2, template3b, template4b1, template4b2, template5b, template6b, template7b, template8b1, template8b2, template0b, template9b, template10b, template11b)

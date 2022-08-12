@@ -6,13 +6,19 @@ library(ggplot2)
 library(data.table)
 
 filenames <- list.files(
-  "C:/Users/Silvy/Documents/R/Repos/PrimatesAndSoundscapes/Output_ManualData", pattern = ".txt", full.names = TRUE
+  "Output_ManualData", pattern = ".txt", full.names = TRUE
+  # I made this line read from the Output_ManualData folder located within the
+  # repo to avoid a hard coded path name! This is much better form :)
 )
 
 # initialize results
 results <- tibble(
   original_output_file=character(),
   survey_file_name=character(),
+  folder=character(),
+  location=character(),
+  recording.date=character(),
+  audiofile=character(),
   template=character(),
   min.score=numeric(),
   max.score=numeric(),
@@ -23,11 +29,16 @@ for (f in filenames){
   r <- tibble(
     original_output_file=character(),
     survey_file_name=character(),
+    folder=character(),
+    location=character(),
+    recording.date=character(),
+    audiofile=character(),
     template=character(),
     min.score=numeric(),
     max.score=numeric(),
     n.scores=numeric())
   d <- read_lines(f, skip_empty_rows = TRUE)
+
   # initialize vectors
   survey_file_name <- character()
   folder <- character()
@@ -38,64 +49,72 @@ for (f in filenames){
   min.score <- numeric()
   max.score <- numeric()
   n.scores <- numeric()
-  # initialize index
-  index <- 0
+  fileindex <- 0 # this is new... now we create a tibble, r, for each set of results. the start of a new set of results are detected by the str_detect function in line 54 and the end is detected by the str_detect function in line 73
+
   for (i in 1:length(d)){ # loop through file line by line
-    if (str_detect(d[i], "Based") ==TRUE){
-      fname <- str_remove(d[i], "Based on the survey file:  [a-zA-Z -]*/")
-      fname <- str_remove(fname, " $")
+    if (str_detect(d[i], "Based") == TRUE){
+      fileindex <- fileindex + 1
+      fname <- str_remove(d[i], "Based on the survey file:  ") # removes start of line
+      fname <- str_remove(fname, " $") # removes terminal space
       locationSubstrings <- str_split(fname, "/")
       folder <- locationSubstrings[[1]][3]
       location <- locationSubstrings[[1]][4]
       recording.date <- locationSubstrings[[1]][5]
-      audiofile_name <- locationSubstrings[[1]][6]
-      filename <- paste0(fname)
+      audiofile <- locationSubstrings[[1]][6]
+      index <- 0
     }
+
     l <- str_split(d[i], "[ ]+")
 
-    if (str_detect(l[[1]][1], "F") ==TRUE){
+    if (str_detect(l[[1]][1], "F") == TRUE){
       index <- index + 1
-      survey_file_name[index] <- filename
-      audiofile[index] <- audiofile_name
       template[index] <- l[[1]][1]
       min.score[index] <- as.numeric(l[[1]][2])
       max.score[index] <- as.numeric(l[[1]][3])
       n.scores[index] <- as.numeric(l[[1]][4])
     }
+    if (str_detect(l[[1]][2], "------------") == TRUE & fileindex > 0){
+      # a tibble for each set of results
+      r <- tibble(
+        # based on recylcing of vectors, f, fname, folder, location, recording.date, and audiofile are repeated for each template
+        original_output_file=f,
+        survey_file_name=fname,
+        folder=folder,
+        location=location,
+        recording.date=recording.date,
+        audiofile=audiofile,
+        # the template and stats are already vectors
+        template=template,
+        min.score=min.score,
+        max.score=max.score,
+        n.scores=n.scores
+      )
+      results <- bind_rows(results, r) # bundle all results together
+    }
   }
-  r <- tibble(
-    original_output_file=f,
-    survey_file_name=survey_file_name,
-    folder=folder,
-    location=location,
-    recording.date=recording.date,
-    audiofile=audiofile,
-    template=template,
-    min.score=min.score,
-    max.score=max.score,
-    n.scores=n.scores
-  )
-  results <- bind_rows(results, r)
-  # cleanup memory and work space
-  rm(list=c(
-    "r",
-    "d",
-    "l",
-    "survey_file_name",
-    "folder",
-    "location",
-    "recording.date",
-    "audiofile",
-    "template",
-    "min.score",
-    "max.score",
-    "n.scores",
-    "index",
-    "i",
-    "filename"
-  ))
 }
 
+# cleanup memory and work space
+rm(list=c(
+  "d",
+  "l",
+  "f",
+  "r",
+  "fileindex",
+  "fname",
+  "index",
+  "survey_file_name",
+  "folder",
+  "location",
+  "locationSubstrings",
+  "recording.date",
+  "audiofile",
+  "template",
+  "min.score",
+  "max.score",
+  "n.scores",
+  "i"
+))
 
 # Separate data that are currently merged in a single column
 results <- separate(data = results, col = "template",
@@ -106,11 +125,13 @@ results <- separate(data = results, col = "template",
 results <- results[, c(13, 10, 11, 12, 3, 4, 5, 6, 7, 8, 9)]
 
 # Merge tables
-Merged_tables <- left_join(results, Primates_In_All_Files, by = c("audiofile" = "audiofile"))
+Primates_In_All_Recordings <- read_csv("Primates_In_All_Recordings_duplicates_removed.csv", col_names = TRUE)
 
-fwrite(results, "results_second_analysis_2022-07-13.csv") #The usual write_csv() only wrote the first 600 lines rather than all 14000+!
+Merged_tables = merge(x=results,y=Primates_In_All_Recordings,by="audiofile")
+
+fwrite(Merged_tables, "results_second_analysis_2022-08-11.csv") #The usual write_csv() only wrote the first 600 lines rather than all 14000+!
 
 # Cleanup memory and work space
-rm(list=c("results", "filenames","f"))
+rm(list=c("results", "filenames"))
 
 
