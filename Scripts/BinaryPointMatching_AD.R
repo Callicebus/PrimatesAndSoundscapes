@@ -60,7 +60,7 @@ template11b <- makeBinTemplate("AutomatedDetection_CreatingTemplates/TestSample_
 # NOTE: ADJUST TO RUN ONLY THE TEMPLATES NEEDED.
 
 # All templates
-ctemps_adjusted_amp <- combineBinTemplates(template1b, template2b1, template2b2, template3b, template4b1, template4b2, template5b, template6b, template7b, template8b1, template8b2, template0b, template9b, template10b, template11b)
+ctemps_adjusted_amp <- combineBinTemplates(template1b, template2b1, template2b2, template3b, template4b2, template5b, template6b, template7b, template0b, template9b, template10b, template11b)
 
 # Only spider templates
 ctemps_spiders <- combineBinTemplates(template9b, template10b, template11b)
@@ -69,12 +69,13 @@ ctemps_spiders <- combineBinTemplates(template9b, template10b, template11b)
 
 # To locate where in an audio file the high detection scores come from, use this:
 
-bscores <- binMatch("E:/For Sun - Full test dataset/Puma 2016/-2, 0/12 feb/PUMA_20160212_080000.wav", ctemps_adjusted_amp)
+bscores <- binMatch("E:/For Sun - Full test dataset/Harpia 2013/7,400/10 feb 2013/HARPIA_20130210_073000.wav", ctemps_adjusted_amp)
 bdetects <- findPeaks(bscores)
 
 bdetects # Shows you the highest detection  score for each template.
 # To find where in the audio file those were located, use the next line of code:
 plot(bdetects)
+
 
 
 #---

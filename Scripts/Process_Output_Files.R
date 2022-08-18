@@ -122,14 +122,14 @@ results <- separate(data = results, col = "template",
                     sep = ",")
 
 # Reorder columns and remove some obsolete columns.
-results <- results[, c(13, 10, 11, 12, 3, 4, 5, 6, 7, 8, 9)]
+results <- results[, c(2, 13, 10, 11, 12, 3, 4, 5, 6, 7, 8, 9)]
 
 # Merge tables
 Primates_In_All_Recordings <- read_csv("Primates_In_All_Recordings_duplicates_removed.csv", col_names = TRUE)
 
 Merged_tables = merge(x=results,y=Primates_In_All_Recordings,by="audiofile")
 
-fwrite(Merged_tables, "results_second_analysis_2022-08-11.csv") #The usual write_csv() only wrote the first 600 lines rather than all 14000+!
+fwrite(Merged_tables, "results_second_analysis_2022-08-18.csv") #The usual write_csv() only wrote the first 600 lines rather than all 14000+!
 
 # Cleanup memory and work space
 rm(list=c("results", "filenames"))
