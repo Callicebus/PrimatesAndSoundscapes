@@ -3,7 +3,7 @@ library(data.table)
 library(dplyr)
 
 # Read in file
-data <- read_csv("results_second_analysis_2022-08-18.csv", col_names = TRUE)
+data <- read_csv("results_second_analysis_2022-08-22.csv", col_names = TRUE)
 
 # Update template names
 data$updated_template_names <- paste(data$template, "_", data$starttime)
@@ -71,4 +71,4 @@ joined_data$titi_over_thresh_and_over_howler <- as.integer(joined_data$titi_over
 joined_data <- joined_data %>%
   mutate(PrimateSpecies = recode(PrimateSpecies, 'None' = '0', 'Titi' = '1', 'Howler' =  '2', 'Titi/Howler' = '3' ))
 
-write_csv(joined_data, "calculating_SNR_2022-08-18.csv")
+write_csv(joined_data, "calculating_SNR_2022-08-22.csv")

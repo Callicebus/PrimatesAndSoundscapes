@@ -129,7 +129,7 @@ Primates_In_All_Recordings <- read_csv("Primates_In_All_Recordings_duplicates_re
 
 Merged_tables = merge(x=results,y=Primates_In_All_Recordings,by="audiofile")
 
-fwrite(Merged_tables, "results_second_analysis_2022-08-18.csv") #The usual write_csv() only wrote the first 600 lines rather than all 14000+!
+fwrite(Merged_tables, "results_second_analysis_2022-08-22.csv") #The usual write_csv() only wrote the first 600 lines rather than all 14000+!
 
 # Cleanup memory and work space
 rm(list=c("results", "filenames"))
